@@ -6,3 +6,4 @@ and i will be ..
 >>>>>>> feature1
 
 is my life!
+nothing
