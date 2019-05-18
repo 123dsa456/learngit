@@ -14,7 +14,7 @@ static struct class_device	*firstdrv_class_dev;
 
 volatile unsigned long *gpfcon = NULL;
 volatile unsigned long *gpfdat = NULL;
-
+/*¿¿¿¿¿*/
 
 static int first_drv_open(struct inode *inode, struct file *file)
 {
