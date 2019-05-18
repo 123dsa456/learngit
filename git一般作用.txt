@@ -1,0 +1,89 @@
+https://www.liaoxuefeng.com/wiki/896043488029600/896954117292416
+
+
+1、从服务器上克隆数据库（包括代码和版本信息）到单机上
+	mkdir<>创建文件---》cd 到文件目录下--》在目录下 git init变成可管理仓库。
+	当编写好文件（vim编写），可以用git add 《文件名》添加到仓库。
+	git commit -m "{注释}"
+	git status可以查看文件状态
+	git diff可查看文件修改内容
+	git log可查看历史命令，git log --pretty=oneline可简化
+	在GIT中，HEAD为当前版本，每个版本都有自己的版本号，比如1094adb，上一个版本HEAD^
+上上个版本HEAD^^    第100个位HEAD~100
+	git reset --hard {版本号}
+	git reflog可以重返未来。
+	git add命令实际上就是把要提交的所有修改放到暂存区（Stage），
+然后，执行git commit就可以一次性把暂存区的所有修改提交到分支。
+	用git diff HEAD -- 《文件名》命令可以查看工作区和版本库里面最新版本的区别
+	git checkout --file可以撤销已经修改了并提交了的文件
+	git reset HEAD 《文件名》可以将暂存区的修改撤销
+	git rm删除文件后，并且git commit，若删错了，则gir checkout -- 《文件名》，但是前提是此文件被
+添加到版本库当中过，否则无法恢复。
+
+	如果你不想让别人看到Git库，有两个办法，一个是交点保护费，让GitHub把公开的仓库变成私有的，
+这样别人就看不见了（不可读更不可写）。另一个办法是自己动手，搭一个Git服务器，
+因为是你自己的Git服务器，所以别人也是看不见的。
+	
+	添加Github远程仓库：git remote add origin 《Github地址》，GIT默认的名字叫origin
+比如git remote add https://github.com/123dsa456/learngit.git
+	git push -u origin master将本地库的所有内容推送到远程库，master为当前分支。
+	git clone 《Github地址》可以克隆一个本地库，前提是远程库已经准备好。
+	git checkout -b dev创建分支并切换到dev分支，git branch查看分支，完成文件修改后可git add
+和git commit提交，后切换回master分支：git checkout master，在master分支上git merge dev合并dev分支的工作
+到master上，合并完成，git branch -d dev删除dev分支
+	当合并文件发生冲突时，应手动解决。git status可查看冲突，cat 《文件名》可查看文件修改内容差异
+此时根据差异做出相应操作，后可用git log --graph --pretty=oneline --abbrev-commit查看分支的合并情况。
+	git merge --no-ff -m "注释" dev，此处的-m和注释为新的commit，这样合并可以查看合并信息。
+
+	在dev分支工作到一半需要修复BUG，则git stash将当前工作内容保存起来，在创建bug分支并解决问题后
+回到dev分支上用git stash list查看，可用git stash pop恢复，， git stash apply stash@{0}。
+	在开发多个分支时，突然删除没有合并的分支内容，则git branch -D 《分支名》强行删除
+	
+	master分支是主分支，因此要时刻与远程同步；dev分支是开发分支，团队所有成员都需要在上面工作，
+所以也需要与远程同步；bug分支只用于在本地修复bug，就没必要推到远程了；feature分支是否推到远程，
+取决于你是否和你的小伙伴合作在上面开发。
+
+	
+	你的小伙伴要在dev分支上开发，就必须创建远程origin的dev分支到本地git checkout -b dev origin/dev
+你的小伙伴已经向origin/dev分支推送了他的提交，而碰巧你也对同样的文件作了修改，并试图推送
+推送失败，因为你的小伙伴的最新提交和你试图推送的提交有冲突先用git pull把最新的提交从origin/dev抓下来，
+然后，在本地合并，解决冲突，再推送git pull也失败了，原因是没有指定本地dev分支与远程origin/dev分支的链接
+git branch --set-upstream-to=origin/dev dev再pull这回git pull成功，但是合并有冲突，需要手动解决，
+解决的方法和分支管理中的解决冲突完全一样。
+	rebase操作的特点：把分叉的提交历史“整理”成一条直线，看上去更直观，git rebase。
+	
+	敲命令git tag <name>就可以打一个新标签，git tag可查看标签。比方说要对add merge这次提交打标签，
+它对应的commit id是f52c633，敲入命令 git tag v0.9 f52c633。可以用git show <tagname>查看标签信息
+命令git tag -a <tagname> -m "blablabla..."可以指定标签信息。
+	git tag -d v0.1删除。如果要推送某个标签到远程，使用命令git push origin <tagname>
+如果标签已经推送到远程，要删除远程标签就麻烦一点，先从本地删除，然后，从远程删
+除 git push origin :refs/tags/v0.9
+	
+
+	在GitHub上，可以任意Fork开源仓库；自己拥有Fork后的仓库的读写权限；可以推送
+pull request给官方仓库来贡献代码。
+	
+	可以使用国内的Git托管服务——码云（gitee.com）。
+
+	使用多个远程库时，我们要注意，git给远程库起的默认名称是origin，如果有多个远程库，
+我们需要用不同的名称来标识不同的远程库。我们先删除已关联的名为origin的远程库：git remote rm origin
+先关联GitHub的远程库：git remote add github git@github.com:michaelliao/learngit.git
+再关联码云的远程库：git remote add gitee git@gitee.com:liaoxuefeng/learngit.git
+要推送到GitHub，使用命令：git push github master要推送到码云，使用命令：git push gitee master
+
+	搭建Git服务器https://www.liaoxuefeng.com/wiki/896043488029600/899998870925664
+
+	
+
+	
+2、在自己的机器上创建分支，修改代码。
+
+3、在单机上自己创建的分支上提交代码。
+4、在单机上合并分支
+5、新建一个分支，把服务器上最新版的代码fetch下来，然后跟自己的主分支合并。
+6、生成补丁（patch），把补丁发送给主开发者。
+7、看主开发者的反馈，如果主开发者发现两个一般开发者之间有冲突（他们之间可以合作解决的冲突）
+，就会要求他们先解决冲突，然后再由其中一个人提交。如果主开发者可以自己解决，或者没有冲突，
+就通过。
+8、一般开发者之间解决冲突的方法，开发者之间可以使用pull 命令解决冲突，
+解决完冲突之后再向主开发者提交补丁。
