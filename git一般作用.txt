@@ -73,6 +73,13 @@ pull request给官方仓库来贡献代码。
 
 	搭建Git服务器https://www.liaoxuefeng.com/wiki/896043488029600/899998870925664
 
+
+
+	git format-patche 《版本号》生成补丁，在打之前用git log查看操作指令。打入patch，
+先将生成的patch复制到一个文件夹（自己创建）中，在使用git am之前， 你要首先git am --abort 一次
+git am 可以一次合并一个文件，或者一个目录下所有的patch，所以git am 《文件目录》/*.patch
+
+
 	
 
 	
